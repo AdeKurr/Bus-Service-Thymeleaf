@@ -1,0 +1,26 @@
+<html>
+<head>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+	crossorigin="anonymous"></script>
+<title>Form Login</title>
+<link href="assets/css/index.css" rel="stylesheet">
+</head>
+
+<body>
+	<h1 class="mantap">Login Penumpang</h1>
+	<form th:object="${formData}"
+	th:action="@{/findnik}"
+	method="get">
+		<div class="form-group">
+			<label for="NIK">NIK</label>
+			<input type="text" class="form-control" id="inputid" placeholder="Masukan NIK anda" th:field="*{nik}">
+		</div>
+		<button type="submit" class="btn btn-primary">SUBMIT!</button>
+	</form>
+	</body>

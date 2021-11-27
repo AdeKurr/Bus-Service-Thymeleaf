@@ -1,0 +1,36 @@
+<html>
+<head>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+	crossorigin="anonymous"></script>
+<title>Booking Detail</title>
+<link href="assets/css/index.css" rel="stylesheet">
+</head>
+
+<body>
+<h1>Pemesanan anda telah berhasil dengan data;</h1>
+	<table class="table">
+		<tr class = "thead">
+			<th scope="col">id</td>
+			<th scope="col">deksripsi</td>
+			<th scope="col">waktu</td>
+			<th scope="col">perusahaan</td>
+			<th scope="col">kelas</td>
+			<th scope="col">harga</td>
+		</tr>
+		<tr th:each="booking : ${data}">
+			<td th:text="${booking.id}"/td>
+			<td th:text="${booking.deskripsi}"/td>
+			<td th:text="${booking.waktu}"/td>
+			<td th:text="${booking.perusahaan}"/td>
+			<td th:text="${booking.kelas}"/td>
+			<td th:text="${booking.harga}"/td>
+		</tr>
+	</table>
+</body>
+</html>

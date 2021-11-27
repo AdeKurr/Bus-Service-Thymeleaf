@@ -1,0 +1,26 @@
+<html>
+<head>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+	crossorigin="anonymous"></script>
+<title>Pembatalan</title>
+<link href="assets/css/index.css" rel="stylesheet">
+</head>
+
+<body>
+	<h1 class="mantap">Pembatalan Booking</h1>
+	<form th:object="${formData}"
+	th:action="@{/cancelbooking}"
+	method="post">
+		<div class="form-group">
+			<label for="idbooking">ID Booking</label>
+			<input type="text" class="form-control" id="inputidbooking" placeholder="Masukan ID Booking yang akan dibatalkan" th:field="*{id}">
+		</div>
+		<button type="submit" class="btn btn-primary">SUBMIT!</button>
+	</form>
+	</body>
