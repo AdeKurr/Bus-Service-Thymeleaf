@@ -1,5 +1,4 @@
 package com.ujian26november.model;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,14 +20,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "booking")
 public class Booking {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private long id;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "id_keberangkatan", referencedColumnName = "id")
 	private Keberangkatan id_keberangkatan;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "nik", referencedColumnName = "nik")
 	private Penumpang nik;
-	
-
 }
