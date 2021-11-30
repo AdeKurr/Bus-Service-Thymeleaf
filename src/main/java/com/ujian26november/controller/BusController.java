@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.ujian26november.model.Booking;
-import com.ujian26november.model.Jurusan;
 import com.ujian26november.model.Keberangkatan;
+import com.ujian26november.model.KeberangkatanDetail;
 import com.ujian26november.model.Penumpang;
 import com.ujian26november.repository.PenumpangRepository;
 import com.ujian26november.repository.BookingRepository;
+import com.ujian26november.repository.KeberangkatanRepository;
 
 @Controller
 public class BusController {
@@ -24,12 +25,8 @@ public class BusController {
 	@Autowired
 	BookingRepository bookingRepo;
 
-//	@GetMapping("/detailpenumpang")
-//	public String getListPeserta(Model model) {
-//		List<Penumpang> anu = penumpangRepo.findByNik(null);
-//		model.addAttribute("formData", anu);
-//		return "detailpenumpang";
-//	}
+	@Autowired
+	KeberangkatanRepository keberangkatanRepo;
 
 	// Nomor 8
 	@GetMapping("/loginpenumpang")
@@ -38,13 +35,13 @@ public class BusController {
 		return "formlogin";
 	}
 
-	// Bingung bagaimana cara memanggil nama dan nomor telepon dan memasukkannya ke formData
 	@GetMapping("/findnik")
-	public String findByNik(@ModelAttribute("formData") Penumpang nik) {
+	public String findByNik(@ModelAttribute("formData") Penumpang nik, Model model2) {
 		List<Penumpang> formData = penumpangRepo.findByNik(nik.getNik());
 		if (formData.size() == 0) {
 			return "kenihilan";
 		} else {
+			model2.addAttribute("formData", formData.get(0));
 			return "detailpenumpang";
 		}
 	}
@@ -63,39 +60,46 @@ public class BusController {
 	}
 
 	// Nomor 10
-	// tanggal adanya di Keberangkatan, tapi terminal adanya di jurusan. Nah new nya
-	// itu ke mana?
 	@GetMapping("/carikeberangkatan")
 	public String cariKeberangkatan(Model model) {
-		model.addAttribute("formData", new  Keberangkatan());
-//		model.addAttribute("formData", new Jurusan());
+		model.addAttribute("formData", new Keberangkatan());
 		return "formcarikeberangkatan";
 	}
 
-	@GetMapping("/findKeberangkatan")
-	public String findKeberangkatan(@ModelAttribute("formData") Keberangkatan tanggal, Jurusan terminalAwal) {
-		penumpangRepo.findByTerminalAndTanggal(tanggal, terminalAwal);
-		return "listdetailkeberangkatan";
+	@PostMapping("/carikeberangkatanresult")
+	public String cariKeberangkatanResult(@ModelAttribute("data") Keberangkatan formData, Model model2) {
+		String alamatHasil = "";
+		List<KeberangkatanDetail> keberangkatanBeneran = keberangkatanRepo
+				.getDetail(formData.getId_jurusan().getTerminal_awal(), formData.getTanggal());
+		if (keberangkatanBeneran.size() == 0) {
+			alamatHasil = "kenihilankeberangkatan";
+		} else {
+			model2.addAttribute("data", keberangkatanBeneran);
+			alamatHasil = "listdetailkeberangkatan";
+		}
+		return alamatHasil;
 	}
 
-	// Nomor 11
-	// Kenapa setId_keberangkatan nggak ada setternya di lombok, padahal di project pak Paulus, setIdjk tuh bisa.
 	@GetMapping("/booking")
 	public String booking(Model model) {
 		model.addAttribute("formData", new Booking());
 		return "formbooking";
 	}
 
-	@PostMapping("/createbooking")
-	public String createBooking(@ModelAttribute("formData") Booking formData) {
-//		long idKeberangkatanBeneran = formData.getId_keberangkatan().getId();
-//		formData.setId_keberangkatan(idKeberangkatanBeneran);
+	@PostMapping("createbooking")
+	public String bookingResult(@ModelAttribute("formData") Booking formData, Model model) {
+		String nik = formData.getNik().getNik();
+		long idKeberangkatan = formData.getId_keberangkatan().getId();
+		List<Penumpang> penumpangSementara = penumpangRepo.findByNik(nik);
+		formData.setNik(penumpangSementara.get(0));
+		Keberangkatan keberangkatanSementara = keberangkatanRepo.getById(idKeberangkatan);
+		formData.setId_keberangkatan(keberangkatanSementara);
 		bookingRepo.save(formData);
+		List<Booking> hasilSimpan = bookingRepo.findByNik(formData.getNik());
+		model.addAttribute("data", hasilSimpan.get(hasilSimpan.size() - 1));
 		return "bookingdetail";
 	}
 
-	// Nomor 12
-	// Entah kenapa Whitelabel error nya ; No class com.ujian26november.model.Booking entity with id 1 exists! padahal ada id 1 di databasenya.
 	@GetMapping("/cancel")
 	public String cancelBooking(Model model) {
 		model.addAttribute("formData", new Booking());
@@ -103,8 +107,8 @@ public class BusController {
 	}
 
 	@PostMapping("/cancelbooking")
-	public String cancel(@ModelAttribute("formData") Booking formData) {
-		bookingRepo.deleteById(formData.getId());
+	public String cancelBooking(@ModelAttribute("formData") Booking dataBooking) {
+		bookingRepo.deleteById(dataBooking.getId());
 		return "cancelmessage";
 	}
 }
