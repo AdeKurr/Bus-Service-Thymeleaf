@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+    
+    <header th:fragment="header">
+        <h1 style="font-size: 100px; background-color: #45D473; font-family: Pacifico; text-align: center;">BUSMANIA.QOM</h1>
+    </header>
+    <div th:fragment="name(firstName)">
+        <p>
+            <h1>Hey! I'm <span th:text="${firstName}"></span>!</h1>
+        </p>
+    </div>
+    <nav th:fragment="menu">
+        <a th:href="@{/}">Homepage</a>
+        <a th:href="@{/about}">About Me</a>
+        <a th:href="@{/blog}">Blog</a>
+        <a th:href="@{/contact}">Contact</a>
+    </nav>
+    
+    <footer th:fragment="footer">
+        <p style="text-align: center">&copy; 2021 busmania.com</p>
+    </footer>
+</body>
+</html>

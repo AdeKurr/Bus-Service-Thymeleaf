@@ -12,7 +12,9 @@
 <link href="assets/css/index.css" rel="stylesheet">
 </head>
 
-<body>
+<body th:each="input : ${formData}" >
+	<div th:insert="fragments/components :: header"></div>
+	<div th:replace="fragments/components :: name(${input.nama})"></div>
 <h1>Anda telah terdaftar, dengan data berikut;</h1>
 	<table class="table">
 		<tr th:each="input : ${formData}">
@@ -28,5 +30,6 @@
 			<td th:text="${input.telepon}"/td>
 		</tr>
 	</table>
+	<div th:insert="fragments/components :: footer"></div>
 </body>
 </html>

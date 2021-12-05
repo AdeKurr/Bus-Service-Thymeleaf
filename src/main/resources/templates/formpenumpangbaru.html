@@ -13,6 +13,8 @@
 </head>
 
 <body>
+	<div th:insert="fragments/components :: header"></div>
+	<div th:replace="fragments/components :: name('John')"></div>
 	<h1 class="mantap">FORM PENDAFTARAN PENUMPANG!!!!11</h1>
 	<form th:object="${formData}"
 	th:action="@{/createpenumpang}"
@@ -30,5 +32,6 @@
 			<input type="text" class="form-control" id="inputtelepon" placeholder="Nomor Telepon" th:field="*{telepon}">
 		</div>
 		<button type="submit" class="btn btn-primary">Submit</button>
+		<div th:insert="fragments/footer :: footer"></div>
 	</form>
 	</body>
